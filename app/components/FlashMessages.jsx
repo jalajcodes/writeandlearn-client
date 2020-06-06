@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-const FlashMessages = (props) => {
+function FlashMessages(props) {
+	// console.log(appState);
 	return (
-		<div>
-			<div className="floating-alerts">
-				{props.messages.map((message, index) => {
-					return (
-						<div className="alert alert-success text-center floating-alert shadow-sm" key={index}>
-							{message}
-						</div>
-					);
-				})}
-			</div>
+		<div className="floating-alerts">
+			{props.messages.map((msg, index) => {
+				return (
+					<div key={index} className="alert alert-success text-center floating-alert shadow-sm">
+						{msg}
+					</div>
+				);
+			})}
 		</div>
 	);
-};
+}
 
 export default FlashMessages;

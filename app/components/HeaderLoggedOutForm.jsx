@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import Axios from 'axios';
-import AppContext from '../AppContext';
+import DispatchContext from '../DispatchContext';
 
-const HeaderLoggedOutForm = (props) => {
-	const { setLoggedIn } = useContext(AppContext);
+const HeaderLoggedOutForm = () => {
+	const appDispatch = useContext(DispatchContext);
 
 	const [username, setUsername] = useState();
 	const [password, setPassword] = useState();
@@ -16,12 +16,12 @@ const HeaderLoggedOutForm = (props) => {
 				localStorage.setItem('appToken', response.data.token);
 				localStorage.setItem('appAvatar', response.data.avatar);
 				localStorage.setItem('appUsername', response.data.username);
-				setLoggedIn(true);
+				appDispatch({ type: 'login' });
 			} else {
 				console.log('%c Check your Username or Password!!!', 'background-color:red;color:#fff;');
 			}
 		} catch (e) {
-			console.log('Something Wrong Happened with the server!');
+			console.log(e, 'Something Wrong Happened with the server!');
 		}
 	};
 
