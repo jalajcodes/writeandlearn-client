@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Axios from 'axios';
+import AppContext from '../AppContext';
 
 const HeaderLoggedOutForm = (props) => {
+	const { setLoggedIn } = useContext(AppContext);
+
 	const [username, setUsername] = useState();
 	const [password, setPassword] = useState();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await Axios.post('http://localhost:8080/login', { username, password });
+			const response = await Axios.post('/login', { username, password });
 			if (response.data) {
 				localStorage.setItem('appToken', response.data.token);
 				localStorage.setItem('appAvatar', response.data.avatar);
 				localStorage.setItem('appUsername', response.data.username);
+				setLoggedIn(true);
 			} else {
 				console.log('%c Check your Username or Password!!!', 'background-color:red;color:#fff;');
 			}
-			props.setLoggedIn(true);
 		} catch (e) {
 			console.log('Something Wrong Happened with the server!');
 		}

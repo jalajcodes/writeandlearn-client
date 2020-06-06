@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import AppContext from '../AppContext';
 
-const HeaderLoggedInForm = (props) => {
+const HeaderLoggedInForm = () => {
+	const { setLoggedIn } = useContext(AppContext);
+
 	const handleLogOut = () => {
-		props.setLoggedIn(false);
+		setLoggedIn(false);
 		localStorage.removeItem('appToken');
 		localStorage.removeItem('appAvatar');
 		localStorage.removeItem('appUsername');

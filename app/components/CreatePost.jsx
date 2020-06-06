@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Layout from './Layout';
 import Axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import AppContext from '../AppContext';
 
 const CreatePost = (props) => {
 	const [title, setTitle] = useState();
 	const [body, setBody] = useState();
 	const [wasSuccessfull, setWasSuccessfull] = useState(false);
+	const { addFlashMessage } = useContext(AppContext);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -20,7 +22,7 @@ const CreatePost = (props) => {
 	};
 
 	if (wasSuccessfull) {
-		props.addFlashMessage('Post Successfully Created!');
+		addFlashMessage('Post Successfully Created!');
 		return <Redirect to={`/post/${wasSuccessfull}`} />;
 	}
 	return (
