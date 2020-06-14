@@ -13,10 +13,7 @@ const HeaderLoggedOutForm = () => {
 		try {
 			const response = await Axios.post('/login', { username, password });
 			if (response.data) {
-				localStorage.setItem('appToken', response.data.token);
-				localStorage.setItem('appAvatar', response.data.avatar);
-				localStorage.setItem('appUsername', response.data.username);
-				appDispatch({ type: 'login' });
+				appDispatch({ type: 'login', data: response.data });
 			} else {
 				console.log('%c Check your Username or Password!!!', 'background-color:red;color:#fff;');
 			}

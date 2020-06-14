@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import Layout from './Layout';
+import StateContext from '../StateContext';
 
 const Feed = () => {
+	const appState = useContext(StateContext);
+
 	return (
 		<Layout title="Feed">
 			<h2 className="text-center">
-				Hello <strong>{localStorage.getItem('appUsername')}</strong>, your feed is empty.
+				Hello <strong>{appState.userDetails.username}</strong>, your feed is empty.
 			</h2>
 			<p className="lead text-muted text-center">
 				Your feed displays the latest posts from the people you follow. If you don&rsquo;t have any friends to
