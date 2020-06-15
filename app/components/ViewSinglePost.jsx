@@ -35,7 +35,7 @@ const ViewSinglePost = () => {
 		return () => {
 			ourRequest.cancel();
 		};
-	}, []);
+	}, [id]);
 	useEffect(() => {
 		if (deleteAttemptCount) {
 			const ourRequest = Axios.CancelToken.source();

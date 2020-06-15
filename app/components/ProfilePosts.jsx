@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import LoadingDotsIcon from './LoadingDotsIcon';
+import Pagination from './Pagination';
 
 const ProfilePosts = () => {
 	const [isLoading, setisLoading] = useState(true);
 	const [posts, setPosts] = useState([]);
+	const [currentPage, setCurrentPage] = useState(null);
+	const [totalPages, setTotalPages] = useState(null);
+	const [currentPosts, setCurrentPosts] = useState([]);
 	const { username } = useParams();
 
 	useEffect(() => {
@@ -21,16 +25,31 @@ const ProfilePosts = () => {
 			}
 		}
 		getPosts();
+
 		return () => {
 			ourRequest.cancel();
 		};
 	}, []);
 
+	const onPageChanged = (data) => {
+		const allPosts = posts;
+
+		const { currentPage, totalPages, pageLimit } = data;
+
+		const offset = (currentPage - 1) * pageLimit;
+		const currentPosts = allPosts.slice(offset, offset + pageLimit);
+		// console.log(currentPosts);
+
+		setCurrentPage(currentPage);
+		setCurrentPosts(currentPosts);
+		setTotalPages(totalPages);
+	};
+
 	if (isLoading) return <LoadingDotsIcon />;
 
 	return (
 		<div className="list-group">
-			{posts.map((post) => {
+			{currentPosts.map((post) => {
 				const date = new Date(post.createdDate);
 				const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
@@ -41,6 +60,10 @@ const ProfilePosts = () => {
 					</Link>
 				);
 			})}
+
+			<div className="d-flex flex-row py-4 align-items-center">
+				<Pagination totalRecords={11} pageLimit={5} pageNeighbours={1} onPageChanged={onPageChanged} />
+			</div>
 		</div>
 	);
 };
