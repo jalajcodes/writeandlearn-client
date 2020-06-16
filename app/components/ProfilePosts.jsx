@@ -18,8 +18,8 @@ const ProfilePosts = () => {
 		async function getPosts() {
 			try {
 				const response = await Axios.get(`/profile/${username}/posts`, { cancelToken: ourRequest.token });
-				setisLoading(false);
 				setPosts(response.data);
+				setisLoading(false);
 			} catch (e) {
 				console.log('There was an error. Profileposts.jsx');
 			}
@@ -29,7 +29,7 @@ const ProfilePosts = () => {
 		return () => {
 			ourRequest.cancel();
 		};
-	}, []);
+	}, [username]);
 
 	const onPageChanged = (data) => {
 		const allPosts = posts;
@@ -62,7 +62,12 @@ const ProfilePosts = () => {
 			})}
 
 			<div className="d-flex flex-row py-4 align-items-center">
-				<Pagination totalRecords={11} pageLimit={5} pageNeighbours={1} onPageChanged={onPageChanged} />
+				<Pagination
+					totalRecords={posts.length}
+					pageLimit={5}
+					pageNeighbours={2}
+					onPageChanged={onPageChanged}
+				/>
 			</div>
 		</div>
 	);

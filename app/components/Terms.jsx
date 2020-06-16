@@ -6,7 +6,7 @@ const Terms = () => {
 		<>
 			<Layout title="Terms">
 				<h2>Our Terms &amp; Conditions</h2>
-				<p class="lead text-muted">
+				<p className="lead text-muted">
 					Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis dolorum labore quisquam vel id
 					dicta fuga! Ducimus, quo. Dolore commodi aliquid error veritatis consequuntur, excepturi cumque fuga
 					eum incidunt doloremque?

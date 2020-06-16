@@ -138,6 +138,11 @@ const ViewSinglePost = () => {
 		return <NotFound />;
 	}
 
+	if (!appState.loggedIn) {
+		appDispatch({ type: 'flashMessage', value: 'You do not have permission to edit that post.' });
+		return <Redirect to="/" />;
+	}
+
 	if (state.permissionProblem) {
 		appDispatch({ type: 'flashMessage', value: 'You do not have permission to edit that post.' });
 		return <Redirect to="/" />;
