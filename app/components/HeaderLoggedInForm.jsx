@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
+import ReactTooltip from 'react-tooltip';
 
 const HeaderLoggedInForm = () => {
 	const appDispatch = useContext(DispatchContext);
@@ -19,16 +20,30 @@ const HeaderLoggedInForm = () => {
 	return (
 		<>
 			<div className="flex-row my-3 my-md-0">
-				<a onClick={handleClick} href="#" className="text-white mr-2 header-search-icon">
+				<a
+					data-tip="Search"
+					data-for="search"
+					onClick={handleClick}
+					href="#"
+					className="text-white mr-2 header-search-icon"
+				>
 					<i className="fas fa-search"></i>
 				</a>{' '}
-				<span className="mr-2 header-chat-icon text-white">
+				<ReactTooltip id="search" className="custom-tooltip" />{' '}
+				<span data-tip="Live Chat" data-for="chat" className="mr-2 header-chat-icon text-white">
 					<i className="fas fa-comment"></i>
 					<span className="chat-count-badge text-white"> </span>
 				</span>{' '}
-				<Link to={`/profile/${appState.userDetails.username}`} className="mr-2">
+				<ReactTooltip id="chat" className="custom-tooltip" />{' '}
+				<Link
+					data-tip="Profile"
+					data-for="profile"
+					to={`/profile/${appState.userDetails.username}`}
+					className="mr-2"
+				>
 					<img className="small-header-avatar" src={appState.userDetails.avatar} />
 				</Link>{' '}
+				<ReactTooltip id="profile" className="custom-tooltip" />{' '}
 				<Link className="btn btn-sm btn-success mr-2" to="/create-post">
 					Create Post
 				</Link>{' '}

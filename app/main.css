@@ -2,8 +2,18 @@ body {
 	font-family: 'Public Sans', sans-serif;
 }
 
+#app {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
 .header-bar {
 	background-color: #292929;
+}
+
+.mainpage {
+	flex: 1;
 }
 
 .container--narrow {
