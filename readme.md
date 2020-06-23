@@ -6,4 +6,4 @@
 
 ➡️ After that `cd` into the `backend-api` folder and run yarn install` 👋
 
-➡️ In the `backend-api` folder change the `.env` file accordingly. 🥇
+➡️ In the `backend-api` folder fill `.env` file accordingly. 🥇
