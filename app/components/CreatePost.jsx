@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
 
-const CreatePost = (props) => {
+const CreatePost = () => {
 	const [title, setTitle] = useState();
 	const [body, setBody] = useState();
 	const [mount, setMount] = useState(false); // this state is for knowing if the compontent has rendered the first time
@@ -32,7 +32,7 @@ const CreatePost = (props) => {
 		e.preventDefault();
 		try {
 			const response = await Axios.post('/create-post', { title, body, token: appState.userDetails.token });
-			console.log('Post Created!');
+
 			setWasSuccessful(response.data);
 		} catch (e) {
 			console.log('Something wrong from the server');

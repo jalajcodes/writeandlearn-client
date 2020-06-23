@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { useImmerReducer } from 'use-immer';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -10,21 +10,23 @@ import StateContext from './StateContext';
 import DispatchContext from './DispatchContext';
 
 // My Components
-import Header from './components/header';
+import LoadingDotsIcon from './components/LoadingDotsIcon';
+import Header from './components/Header';
 import HomeGuest from './components/HomeGuest';
 import Feed from './components/Feed';
-import Footer from './components/footer';
+import Footer from './components/Footer';
 import About from './components/About';
 import Terms from './components/Terms';
-import CreatePost from './components/CreatePost';
-import ViewSinglePost from './components/ViewSinglePost';
 import FlashMessages from './components/FlashMessages';
 import Profile from './components/Profile';
 import EditPost from './components/EditPost';
 import NotFound from './components/NotFound';
-import Search from './components/Search';
+const CreatePost = React.lazy(() => import('./components/CreatePost'));
+const ViewSinglePost = React.lazy(() => import('./components/ViewSinglePost'));
+const Search = React.lazy(() => import('./components/Search'));
+const Chat = React.lazy(() => import('./components/Chat'));
 
-Axios.defaults.baseURL = 'http://localhost:8080';
+Axios.defaults.baseURL = process.env.BACKENDURL || '';
 
 function Main() {
 	const initialState = {
@@ -36,6 +38,8 @@ function Main() {
 			username: localStorage.getItem('appUsername'),
 		},
 		isSearchOpen: false,
+		isChatOpen: false,
+		unreadMessageCount: 0,
 	};
 
 	function ourReducer(draft, action) {
@@ -56,6 +60,18 @@ function Main() {
 			case 'closeSearch':
 				draft.isSearchOpen = false;
 				return;
+			case 'toggleChat':
+				draft.isChatOpen = !draft.isChatOpen;
+				return;
+			case 'closeChat':
+				draft.isChatOpen = false;
+				return;
+			case 'incrementUnreadMessageCount':
+				draft.unreadMessageCount++;
+				return;
+			case 'clearUnreadMessageCount':
+				draft.unreadMessageCount = 0;
+				return;
 		}
 	}
 
@@ -73,41 +89,72 @@ function Main() {
 		}
 	}, [state.loggedIn]);
 
+	useEffect(() => {
+		if (state.loggedIn) {
+			const ourRequest = Axios.CancelToken.source();
+			async function checkToken() {
+				try {
+					const response = await Axios.post(
+						'/checkToken',
+						{ token: state.userDetails.token },
+						{ cancelToken: ourRequest.token }
+					);
+					if (!response.data) {
+						dispatch({ type: 'logout' });
+						dispatch({ type: 'flashMessage', value: 'Your session is expired. Please login again.' });
+					}
+				} catch (e) {
+					console.log(e);
+				}
+			}
+			checkToken();
+
+			return () => ourRequest.cancel();
+		}
+	}, []);
+
 	return (
 		<StateContext.Provider value={state}>
 			<DispatchContext.Provider value={dispatch}>
 				<BrowserRouter>
 					<FlashMessages messages={state.flashMessages} />
 					<Header />
-					<Switch>
-						<Route path="/" exact>
-							{state.loggedIn ? <Feed /> : <HomeGuest />}
-						</Route>
-						<Route path="/profile/:username">
-							<Profile />
-						</Route>
-						<Route path="/about-us">
-							<About />
-						</Route>
-						<Route path="/terms">
-							<Terms />
-						</Route>
-						<Route path="/create-post">
-							<CreatePost />
-						</Route>
-						<Route path="/post/:id" exact>
-							<ViewSinglePost />
-						</Route>
-						<Route path="/post/:id/edit" exact>
-							<EditPost />
-						</Route>
-						<Route>
-							<NotFound />
-						</Route>
-					</Switch>
+					<Suspense fallback={<LoadingDotsIcon />}>
+						<Switch>
+							<Route path="/" exact>
+								{state.loggedIn ? <Feed /> : <HomeGuest />}
+							</Route>
+							<Route path="/profile/:username">
+								<Profile />
+							</Route>
+							<Route path="/about-us">
+								<About />
+							</Route>
+							<Route path="/terms">
+								<Terms />
+							</Route>
+							<Route path="/create-post">
+								<CreatePost />
+							</Route>
+							<Route path="/post/:id" exact>
+								<ViewSinglePost />
+							</Route>
+							<Route path="/post/:id/edit" exact>
+								<EditPost />
+							</Route>
+							<Route>
+								<NotFound />
+							</Route>
+						</Switch>
+					</Suspense>
 					<CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
-						<Search />
+						<Suspense fallback="">
+							<div className="search-overlay">
+								<Search />
+							</div>
+						</Suspense>
 					</CSSTransition>
+					<Suspense fallback="">{state.loggedIn && <Chat />}</Suspense>
 					<Footer />
 				</BrowserRouter>
 			</DispatchContext.Provider>

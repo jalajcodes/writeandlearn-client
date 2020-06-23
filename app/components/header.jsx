@@ -5,17 +5,19 @@ import HeaderLoggedInForm from './HeaderLoggedInForm';
 import HeaderLoggedOutForm from './HeaderLoggedOutForm';
 import StateContext from '../StateContext';
 
-function Header() {
+function Header(props) {
 	const appState = useContext(StateContext);
+	const showForm = appState.loggedIn ? <HeaderLoggedInForm /> : <HeaderLoggedOutForm />;
+
 	return (
 		<header className="header-bar bg-primary mb-3">
 			<div className="container d-flex flex-column flex-md-row align-items-center p-3">
 				<h4 className="my-0 mr-md-auto font-weight-normal">
 					<Link to="/" className="text-white">
-						ComplexApp
+						ComplexApp!
 					</Link>
 				</h4>
-				{appState.loggedIn ? <HeaderLoggedInForm /> : <HeaderLoggedOutForm />}
+				{!props.staticEmpty ? showForm : ''}
 			</div>
 		</header>
 	);

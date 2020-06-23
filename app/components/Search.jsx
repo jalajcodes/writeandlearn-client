@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import DispatchContext from '../DispatchContext';
 import { useImmer } from 'use-immer';
 import Axios from 'axios';
@@ -98,7 +97,7 @@ const Search = () => {
 	}
 
 	return (
-		<div className="search-overlay">
+		<>
 			<div className="search-overlay-top shadow-sm">
 				<div className="container container--narrow">
 					<label htmlFor="live-search-field" className="search-overlay-icon">
@@ -156,7 +155,7 @@ const Search = () => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

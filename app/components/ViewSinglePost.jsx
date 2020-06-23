@@ -94,7 +94,7 @@ const ViewSinglePost = () => {
 	}
 
 	return (
-		<Layout title={post.title} wide="true">
+		<Layout title={post.title}>
 			<div className="d-flex justify-content-between">
 				<h1>{post.title}</h1>
 				{isOwner() && (

@@ -10,6 +10,7 @@ const HeaderLoggedInForm = () => {
 
 	const handleLogOut = () => {
 		appDispatch({ type: 'logout' });
+		appDispatch({ type: 'flashMessage', value: 'Successfully logged out.' });
 	};
 
 	const handleClick = (e) => {
@@ -30,9 +31,21 @@ const HeaderLoggedInForm = () => {
 					<i className="fas fa-search"></i>
 				</a>{' '}
 				<ReactTooltip id="search" className="custom-tooltip" />{' '}
-				<span data-tip="Live Chat" data-for="chat" className="mr-2 header-chat-icon text-white">
+				<span
+					onClick={() => appDispatch({ type: 'toggleChat' })}
+					data-tip="Live Chat"
+					data-for="chat"
+					className={'mr-2 header-chat-icon ' + (appState.unreadMessageCount ? 'text-danger' : 'text-white')}
+				>
 					<i className="fas fa-comment"></i>
-					<span className="chat-count-badge text-white"> </span>
+					{appState.unreadMessageCount ? (
+						<span className="chat-count-badge text-white">
+							{' '}
+							{appState.unreadMessageCount >= 10 ? '9+' : appState.unreadMessageCount}{' '}
+						</span>
+					) : (
+						''
+					)}
 				</span>{' '}
 				<ReactTooltip id="chat" className="custom-tooltip" />{' '}
 				<Link

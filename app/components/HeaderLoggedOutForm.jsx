@@ -14,8 +14,9 @@ const HeaderLoggedOutForm = () => {
 			const response = await Axios.post('/login', { username, password });
 			if (response.data) {
 				appDispatch({ type: 'login', data: response.data });
+				appDispatch({ type: 'flashMessage', value: 'You have successfully logged in.' });
 			} else {
-				console.log('%c Check your Username or Password!!!', 'background-color:red;color:#fff;');
+				appDispatch({ type: 'flashMessage', value: 'Invalid Username/Password' });
 			}
 		} catch (e) {
 			console.log(e, 'Something Wrong Happened with the server!');
