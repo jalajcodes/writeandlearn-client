@@ -26,7 +26,9 @@ const CreatePost = () => {
 		below in the if condition but moved above here because it was giving a warning in console
 		saying "We can not update a component from another component"
 	*/
-	useEffect(() => (mount ? appDispatch({ type: 'flashMessage', value: 'Success!!' }) : undefined), [wasSuccessful]);
+	useEffect(() => (mount ? appDispatch({ type: 'flashMessage', value: 'Post created successfully.' }) : undefined), [
+		wasSuccessful,
+	]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
