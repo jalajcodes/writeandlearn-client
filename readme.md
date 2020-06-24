@@ -1,3 +1,7 @@
+Frontend for the Blogging App.
+
+* Created in React with help some helper libraries.
+
 # How to run the app?
 
 ➡️ Clone the repo. ✈️
