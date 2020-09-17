@@ -9,7 +9,7 @@ import StateContext from '../StateContext';
 import DispatchContext from '../DispatchContext';
 import NotFound from './NotFound';
 
-const ViewSinglePost = () => {
+const EditPost = () => {
 	const appState = useContext(StateContext);
 	const appDispatch = useContext(DispatchContext);
 
@@ -209,4 +209,4 @@ const ViewSinglePost = () => {
 	);
 };
 
-export default ViewSinglePost;
+export default EditPost;
