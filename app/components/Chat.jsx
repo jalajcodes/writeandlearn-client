@@ -25,7 +25,7 @@ function Chat(props) {
 	}, [appState.isChatOpen]);
 
 	useEffect(() => {
-		socket.current = io(process.env.BACKENDURL || 'https://writeandlearn-api.herokuapp.com');
+		socket.current = io(process.env.BACKENDURL || 'https://writeandlearn-api.onrender.com');
 
 		socket.current.on('chatFromServer', (message) => {
 			setState((draft) => {
